@@ -66,8 +66,28 @@ public class JsonPathResultMatchersTests {
 		new JsonPathResultMatchers("$.foo").doesNotExist().match(getStubMvcResult());
 	}
 
+	@Test
+	public void isArrayMatch() throws Exception {
+		new JsonPathResultMatchers("$.qux").isArray().match(getStubMvcResult());
+	}
+
+	@Test(expected=AssertionError.class)
+	public void isArrayNoMatch() throws Exception {
+		new JsonPathResultMatchers("$.bar").isArray().match(getStubMvcResult());
+	}
+
+	@Test
+	public void isNotArrayMatch() throws Exception {
+		new JsonPathResultMatchers("$.bar").isNotArray().match(getStubMvcResult());
+	}
+
+	@Test(expected=AssertionError.class)
+	public void isNotArrayNoMatch() throws Exception {
+		new JsonPathResultMatchers("$.qux").isNotArray().match(getStubMvcResult());
+	}
+
 	
-	private static final String CONTENT = "{\"foo\":\"bar\"}";
+	private static final String CONTENT = "{\"foo\":\"bar\", \"qux\":[\"baz1\",\"baz2\"]}";
 
 	private StubMvcResult getStubMvcResult() throws Exception {
 		MockHttpServletResponse response = new MockHttpServletResponse();
